@@ -1,0 +1,25 @@
+@startuml
+
+title Google Cloud KMS Key Version States
+
+[*] --> PENDING_GENERATION : Create a key
+
+PENDING_GENERATION : Createing a key
+PENDING_GENERATION --> ENABLED : Creation complete
+
+ENABLED : Available for cryptographic operations
+ENABLED --> DISABLED : Update to disabled
+
+DISABLED : Unavailable for cryptographic operations
+DISABLED --> ENABLED : Update to enabled
+
+ENABLED --> DESTROY_SCHEDULED : Destory a key
+DISABLED --> DESTROY_SCHEDULED : Destroy a key
+DESTROY_SCHEDULED : Waiting for destruction
+DESTROY_SCHEDULED --> DESTROYED : After 24 hours
+DESTROY_SCHEDULED --> DISABLED : Cancel destruction
+
+DESTROYED : Key is completely destroyed
+DESTROYED --> [*]
+
+@enduml
